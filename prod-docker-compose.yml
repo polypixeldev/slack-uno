@@ -1,0 +1,21 @@
+version: "3"
+services:
+  main:
+    build:
+      context: .
+      dockerfile: prod.Dockerfile
+    ports:
+      - "58607:58607"
+    volumes:
+      - "./bin:/usr/src/app/bin"
+      - "./src:/usr/src/app/src"
+    environment:
+      REDIS_URL: "redis://db:6379"
+    env_file: .env
+  db:
+    image: redis
+    command: redis-server --appendonly yes
+    volumes:
+      - db_volume:/data
+volumes:
+  db_volume:
